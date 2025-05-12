@@ -11,6 +11,7 @@ const useComentarios = (publicacionId) => {
       setLoading(true);
       try {
         const data = await listarComentarios(publicacionId);
+        console.log("Comentarios obtenidos:", data); 
         setComentarios(Array.isArray(data) ? data : []);
       } catch (e) {
         setError("Error al cargar los comentarios. Intenta nuevamente.");
@@ -19,15 +20,13 @@ const useComentarios = (publicacionId) => {
         setLoading(false);
       }
     };
-
+  
     fetchComentarios();
   }, [publicacionId]);
 
   const agregarComentario = async (comentario) => {
     try {
       const comentarioCompleto = { ...comentario, publicacion: publicacionId };
-      console.log("Enviando comentario:", comentarioCompleto);
-
       const nuevoComentario = await crearComentario(comentarioCompleto);
 
       if (nuevoComentario && typeof nuevoComentario === "object") {

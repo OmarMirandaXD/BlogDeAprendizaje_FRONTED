@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { listarPublicaciones } from "../../services/api";
 import PublicacionesCard from "../../components/publicaciones/PublicacionesCard";
+import PublicacionesFiltro from "../../components/publicaciones/PublicacionesFiltro";
 import usePublicacionesFiltro from "../../shared/hook/usePublicacionesFiltro";
 import SearchAppBar from "../../components/nadvar/Nadvar";
+import "../../pages/publicaciones/Publicaciones.css"; 
 
 const Publicaciones = () => {
   const [publicaciones, setPublicaciones] = useState([]);
-  const { filtro, setFiltro, publicacionesFiltradas } = usePublicacionesFiltro(publicaciones);
+  const { filtro, setFiltro, ordenFecha, setOrdenFecha, publicacionesFiltradas } =
+    usePublicacionesFiltro(publicaciones);
 
   useEffect(() => {
     const fetchPublicaciones = async () => {
@@ -27,12 +30,21 @@ const Publicaciones = () => {
 
   return (
     <>
-      <SearchAppBar filtro={filtro} setFiltro={setFiltro} />
-      <div className="publicaciones-list">
-        {Array.isArray(publicacionesFiltradas) &&
-          publicacionesFiltradas.map((publicacion) => (
-            <PublicacionesCard key={publicacion._id} publicacion={publicacion} />
-          ))}
+      <SearchAppBar />
+      <div className="publicaciones-container">
+        
+        <PublicacionesFiltro
+          filtro={filtro}
+          setFiltro={setFiltro}
+          ordenFecha={ordenFecha}
+          setOrdenFecha={setOrdenFecha}
+        />
+        <div className="publicaciones-list">
+          {Array.isArray(publicacionesFiltradas) &&
+            publicacionesFiltradas.map((publicacion) => (
+              <PublicacionesCard key={publicacion._id} publicacion={publicacion} />
+            ))}
+        </div>
       </div>
     </>
   );
